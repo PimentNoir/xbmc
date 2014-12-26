@@ -30,7 +30,7 @@ DEBUILD_OPTS=${DEBUILD_OPTS:-""}
 PDEBUILD_OPTS=${PDEBUILD_OPTS:-""}
 PBUILDER_BASE=${PBUILDER_BASE:-"/var/cache/pbuilder"}
 DPUT_TARGET=${DPUT_TARGET:-"local"}
-DEBIAN=${DEBIAN:-"https://github.com/xbmc/xbmc-packaging/archive/master.tar.gz"}
+DEBIAN=${DEBIAN:-"https://github.com/PimentNoir/xbmc-packaging/archive/master-odroid.tar.gz"}
 
 function usage {
     echo "$0: this script builds a Xbmc debian package from a git repository."
