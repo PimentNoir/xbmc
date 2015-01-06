@@ -1,8 +1,8 @@
 #pragma once
 
 /*
- *      Copyright (C) 2011-2013 Team XBMC
- *      http://xbmc.org
+ *      Copyright (C) 2011-2012 Team XBMC
+ *      http://www.xbmc.org
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,12 +21,24 @@
  */
 
 #include "EGLNativeType.h"
-class CEGLNativeTypeAmlogic : public CEGLNativeType
+#include <list>
+
+#ifndef _FBDEV_WINDOW_H_
+// Define it right here, since some platforms doesn't has fbdev_window.h at all.
+// This will not make fail on these platforms badly, since it will fail anyway on some other init steps.
+typedef struct fbdev_window
+{
+  unsigned short width;
+  unsigned short height;
+} fbdev_window;
+#endif
+
+class CEGLNativeTypeFbdev : public CEGLNativeType
 {
 public:
-  CEGLNativeTypeAmlogic();
-  virtual ~CEGLNativeTypeAmlogic();
-  virtual std::string GetNativeName() const { return "amlogic"; };
+  CEGLNativeTypeFbdev();
+  virtual ~CEGLNativeTypeFbdev();
+  virtual std::string GetNativeName() const { return "FBDev"; };
   virtual bool  CheckCompatibility();
   virtual void  Initialize();
   virtual void  Destroy();
@@ -48,11 +60,7 @@ public:
   virtual bool  ShowWindow(bool show);
 
 protected:
-  bool SetDisplayResolution(const char *resolution);
-  void SetupVideoScaling(const char *mode);
-  void EnableFreeScale();
-  void DisableFreeScale();
-
-private:
-  std::string m_framebuffer_name;
+  int m_iFBHandle;
+  int width;
+  int height;
 };
