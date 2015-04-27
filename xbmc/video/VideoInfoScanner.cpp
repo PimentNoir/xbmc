@@ -156,6 +156,7 @@ namespace VIDEO
         }
       }
 
+      g_infoManager.ResetLibraryBools();
       m_database.Close();
 
       tick = XbmcThreads::SystemClockMillis() - tick;
@@ -370,10 +371,7 @@ namespace VIDEO
         GetPathHash(items, hash);
         bSkip = true;
         if (!m_database.GetPathHash(strDirectory, dbHash) || dbHash != hash)
-        {
-          m_database.SetPathHash(strDirectory, hash);
           bSkip = false;
-        }
         else
           items.Clear();
       }
@@ -522,7 +520,6 @@ namespace VIDEO
     if(pDlgProgress)
       pDlgProgress->ShowProgressBar(false);
 
-    g_infoManager.ResetLibraryBools();
     m_database.Close();
     return FoundSomeInfo;
   }
