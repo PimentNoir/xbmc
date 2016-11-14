@@ -244,7 +244,7 @@ AC_ARG_WITH([platform],
 
 AC_ARG_ENABLE([optimizations],
   [AS_HELP_STRING([--enable-optimizations],
-  [enable optimization (default is yes)])],
+  [enable passing -O2 to CFLAGS (default is yes)])],
   [use_optimizations=$enableval],
   [use_optimizations=yes])
 
@@ -1464,9 +1464,9 @@ if test "x$use_libcec" != "xno"; then
   # libcec is dyloaded, so we need to check for its headers and link any depends.
   if test "x$use_libcec" != "xno"; then
     if test "x$use_libcec" != "xauto"; then
-      PKG_CHECK_MODULES([CEC],[libcec >= 3.0.0],,[use_libcec="no";AC_MSG_ERROR($libcec_disabled)])
+      PKG_CHECK_MODULES([CEC],[libcec >= 4.0.0],,[use_libcec="no";AC_MSG_ERROR($libcec_disabled)])
     else
-      PKG_CHECK_MODULES([CEC],[libcec >= 3.0.0],,[use_libcec="no";AC_MSG_RESULT($libcec_disabled)])
+      PKG_CHECK_MODULES([CEC],[libcec >= 4.0.0],,[use_libcec="no";AC_MSG_RESULT($libcec_disabled)])
     fi
 
     if test "x$use_libcec" != "xno"; then

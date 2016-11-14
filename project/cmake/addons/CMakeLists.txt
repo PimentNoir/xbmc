@@ -66,7 +66,7 @@ endif()
 
 # check for autoconf stuff to pass on
 if(AUTOCONF_FILES)
-  separate_arguments(AUTOCONF_FILES)
+  string(REPLACE " " ";" AUTOCONF_FILES ${AUTOCONF_FILES})
   set(CROSS_AUTOCONF "yes")
 endif()
 
@@ -120,7 +120,7 @@ if(NOT ADDONS_TO_BUILD)
 else()
   string(STRIP "${ADDONS_TO_BUILD}" ADDONS_TO_BUILD)
   message(STATUS "Building following addons: ${ADDONS_TO_BUILD}")
-  separate_arguments(ADDONS_TO_BUILD)
+  string(REPLACE " " ";" ADDONS_TO_BUILD ${ADDONS_TO_BUILD})
 endif()
 
 if(NOT ADDONS_DEFINITION_DIR)
@@ -228,7 +228,7 @@ set(SUPPORTED_ADDON_FOUND FALSE)
 foreach(addon ${addons})
   if(NOT (addon MATCHES platforms.txt))
     file(STRINGS ${addon} def)
-    separate_arguments(def)
+    string(REPLACE " " ";" def ${def})
     list(GET def 0 id)
 
     set(ADDON_FOUND FALSE)
@@ -254,9 +254,7 @@ foreach(addon ${addons})
 
       if(${platform_found})
         # make sure the output directory is clean
-        if(EXISTS "${CMAKE_INSTALL_PREFIX}/${id}")
-          file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/${id}/")
-        endif()
+        file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/${id}/")
 
         # get the URL and revision of the addon
         list(LENGTH def deflength)
@@ -334,9 +332,7 @@ foreach(addon ${addons})
           endif()
 
           # remove any previously extracted version of the addon
-          if(EXISTS "${BUILD_DIR}/${id}")
-            file(REMOVE_RECURSE "${BUILD_DIR}/${id}")
-          endif()
+          file(REMOVE_RECURSE "${BUILD_DIR}/${id}")
 
           # extract the addon from the archive
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzvf ${BUILD_DIR}/download/${archive_name}.tar.gz

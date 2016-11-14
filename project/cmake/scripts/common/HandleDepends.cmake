@@ -19,7 +19,7 @@ function(add_addon_depends addon searchpath)
             file MATCHES platforms.txt))
       message(STATUS "Processing ${file}")
       file(STRINGS ${file} def)
-      separate_arguments(def)
+      string(REPLACE " " ";" def ${def})
       list(LENGTH def deflength)
       get_filename_component(dir ${file} DIRECTORY)
 
@@ -48,7 +48,7 @@ function(add_addon_depends addon searchpath)
         if(EXISTS ${dir}/flags.txt)
           set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${dir}/flags.txt)
           file(STRINGS ${dir}/flags.txt extraflags)
-          separate_arguments(extraflags)
+          string(REPLACE " " ";" extraflags ${extraflags})
           message(STATUS "${id} extraflags: ${extraflags}")
         endif()
 
@@ -78,9 +78,7 @@ function(add_addon_depends addon searchpath)
 
         # prepare patchfile. ensure we have a clean file after reconfiguring
         set(PATCH_FILE ${BUILD_DIR}/${id}/tmp/patch.cmake)
-        if(EXISTS ${PATCH_FILE})
-          file(REMOVE ${PATCH_FILE})
-        endif()
+        file(REMOVE ${PATCH_FILE})
 
         # if there's a CMakeLists.txt use it to prepare the build
         if(EXISTS ${dir}/CMakeLists.txt)
