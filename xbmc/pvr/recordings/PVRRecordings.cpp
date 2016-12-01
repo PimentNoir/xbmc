@@ -139,9 +139,9 @@ void CPVRRecordings::GetSubDirectories(const CPVRRecordingsPath &recParentPath, 
       unwatchedFolders.insert(pFileItem);
   }
 
-  // Remove the watched overlay from folders containing unwatched entries
+  // Change the watched overlay to unwatched for folders containing unwatched entries
   for (auto item : unwatchedFolders)
-    item->SetOverlayImage(CGUIListItem::ICON_OVERLAY_WATCHED, true);
+    item->SetOverlayImage(CGUIListItem::ICON_OVERLAY_UNWATCHED, false);
 }
 
 int CPVRRecordings::Load(void)
@@ -338,14 +338,6 @@ bool CPVRRecordings::GetDirectory(const std::string& strPath, CFileItemList &ite
 
       items.Add(pFileItem);
     }
-  }
-
-  if (items.IsEmpty())
-  {
-    // Note: Do not change the ".." label. It has very special meaning/logic.
-    //       CFileItem::IsParentFolder() and and other code depends on this.
-    const CFileItemPtr item(new CFileItem(".."));
-    items.Add(item);
   }
 
   return recPath.IsValid();
