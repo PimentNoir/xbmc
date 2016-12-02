@@ -68,7 +68,7 @@
 			<onup>$PARAM[list_id]</onup>
 			<ondown>$PARAM[list_id]</ondown>
 			<viewtype label="$PARAM[viewtype_label]">list</viewtype>
-			<visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Window.IsActive(MyPlaylist.xml)</visible>
+			<visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(games) | Window.IsActive(MyPlaylist.xml)</visible>
 			<focusedlayout height="list_item_height" width="list_width">
 				<control type="image">
 					<left>0</left>
@@ -181,7 +181,7 @@
 					<top>640</top>
 					<width>525</width>
 					<bottom>117</bottom>
-					<autoscroll time="3000" delay="7000" repeat="5000">!System.HasModalDialog + Skin.HasSetting(AutoScroll)</autoscroll>
+					<autoscroll time="3000" delay="7000" repeat="5000">!System.HasActiveModalDialog + Skin.HasSetting(AutoScroll)</autoscroll>
 					<label>$VAR[ListBoxInfoVar]</label>
 					<visible>!Container.Content() | !String.isempty(ListItem.Plot)</visible>
 				</control>
