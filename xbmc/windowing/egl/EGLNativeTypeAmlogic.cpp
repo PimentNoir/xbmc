@@ -24,6 +24,7 @@
 #include "utils/StringUtils.h"
 #include "utils/SysfsUtils.h"
 #include "utils/log.h"
+#include "filesystem/SpecialProtocol.h"
 
 #include <stdlib.h>
 #include <linux/fb.h>
@@ -178,8 +179,14 @@ bool CEGLNativeTypeAmlogic::ProbeResolutions(std::vector<RESOLUTION_INFO> &resol
 {
   CLog::Log(LOGDEBUG, "%s::%s", CLASSNAME, __func__);
 
-  std::string valstr;
-  SysfsUtils::GetString("/sys/class/amhdmitx/amhdmitx0/disp_cap", valstr);
+  std::string valstr, dcapfile;
+  dcapfile = CSpecialProtocol::TranslatePath("special://home/userdata/disp_cap");
+
+  if (SysfsUtils::GetString(dcapfile, valstr) < 0)
+  {
+    if (SysfsUtils::GetString("/sys/class/amhdmitx/amhdmitx0/disp_cap", valstr) < 0)
+      return false;
+  }
   std::vector<std::string> probe_str = StringUtils::Split(valstr, "\n");
 
   resolutions.clear();
@@ -190,6 +197,7 @@ bool CEGLNativeTypeAmlogic::ProbeResolutions(std::vector<RESOLUTION_INFO> &resol
       resolutions.push_back(res);
   }
   return resolutions.size() > 0;
+
 }
 
 bool CEGLNativeTypeAmlogic::GetPreferredResolution(RESOLUTION_INFO *res) const

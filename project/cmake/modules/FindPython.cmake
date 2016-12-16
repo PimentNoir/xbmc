@@ -6,7 +6,7 @@
 # PYTHON_LIBRARIES - The python libraries
 
 if(PKG_CONFIG_FOUND)
-  pkg_check_modules(PC_PYTHON python >= 2.7 QUIET)
+  pkg_check_modules(PC_PYTHON python>=2.7 QUIET)
 endif()
 
 find_program(PYTHON_EXECUTABLE python ONLY_CMAKE_FIND_ROOT_PATH)
@@ -20,12 +20,13 @@ if(KODI_DEPENDSBUILD)
   find_library(GMP_LIBRARY gmp REQUIRED)
 
   if(NOT CORE_SYSTEM_NAME STREQUAL android)
-    set(PYTHON_DEP_LIBRARIES -lpthread -ldl -lutil)
+    set(PYTHON_DEP_LIBRARIES pthread dl util)
   endif()
 
   set(PYTHON_LIBRARIES ${PYTHON_LIBRARY} ${FFI_LIBRARY} ${EXPAT_LIBRARY} ${INTL_LIBRARY} ${GMP_LIBRARY} ${PYTHON_DEP_LIBRARIES})
 else()
   find_package(PythonLibs 2.7 REQUIRED)
+  list(APPEND PYTHON_LIBRARIES ${PC_PYTHON_STATIC_LIBRARIES})
 endif()
 
 
