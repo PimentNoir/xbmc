@@ -7960,7 +7960,11 @@ std::string CGUIInfoManager::GetMultiInfoLabel(const GUIInfo &info, int contextW
     else
     {
       time = CDateTime::GetCurrentDateTime();
-      time += CDateTimeSpan(0, 0, 0, GetPlayTimeRemaining());
+      int playTimeRemaining = GetPlayTimeRemaining();
+      float speed = g_application.m_pPlayer->GetPlaySpeed();
+      if (speed >= 0.75 && speed <= 1.55)
+        playTimeRemaining /= speed;
+      time += CDateTimeSpan(0, 0, 0, playTimeRemaining);
     }
     return LocalizeTime(time, (TIME_FORMAT)info.GetData1());
   }
@@ -8395,7 +8399,7 @@ std::string CGUIInfoManager::GetPlaylistLabel(int item, int playlistid /* = PLAY
   case PLAYLIST_RANDOM:
     {
       if (g_playlistPlayer.IsShuffled(iPlaylist))
-        return g_localizeStrings.Get(590); // 590: Random
+        return g_localizeStrings.Get(16041); // 16041: On
       else
         return g_localizeStrings.Get(591); // 591: Off
     }
