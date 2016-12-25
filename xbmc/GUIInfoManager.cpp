@@ -4276,16 +4276,6 @@ const infomap playlist[] =       {{ "length",           PLAYLIST_LENGTH },
 ///                  _string_,
 ///     Backend number
 ///   }
-///   \table_row3{   <b>`Pvr.HasEpg`</b>,
-///                  \anchor Pvr_HasEpg
-///                  _boolean_,
-///     Returns true when an epg is available.
-///   }
-///   \table_row3{   <b>`Pvr.HasTxt`</b>,
-///                  \anchor Pvr_HasTxt
-///                  _boolean_,
-///     Returns true when teletext is available.
-///   }
 ///   \table_row3{   <b>`Pvr.TotalDiscSpace`</b>,
 ///                  \anchor Pvr_TotalDiscSpace
 ///                  _string_,
@@ -4558,8 +4548,6 @@ const infomap pvr[] =            {{ "isrecording",              PVR_IS_RECORDING
                                   { "backendrecordings",        PVR_BACKEND_RECORDINGS },
                                   { "backenddeletedrecordings", PVR_BACKEND_DELETED_RECORDINGS },
                                   { "backendnumber",            PVR_BACKEND_NUMBER },
-                                  { "hasepg",                   PVR_HAS_EPG },
-                                  { "hastxt",                   PVR_HAS_TXT },
                                   { "totaldiscspace",           PVR_TOTAL_DISKSPACE },
                                   { "nexttimer",                PVR_NEXT_TIMER },
                                   { "isplayingtv",              PVR_IS_PLAYING_TV },
@@ -8076,17 +8064,9 @@ std::string CGUIInfoManager::GetMultiInfoLabel(const GUIInfo &info, int contextW
     return GetMusicPlaylistInfo(info);
   else if (info.m_info == CONTAINER_PROPERTY)
   {
-    CGUIWindow *window = NULL;
-    if (info.GetData1())
-    { // container specified
-      window = GetWindowWithCondition(contextWindow, 0);
-    }
-    else
-    { // no container specified - assume a mediawindow
-      window = GetWindowWithCondition(contextWindow, WINDOW_CONDITION_IS_MEDIA_WINDOW);
-    }
+    CGUIWindow *window = GetWindowWithCondition(contextWindow, WINDOW_CONDITION_IS_MEDIA_WINDOW);
     if (window)
-      return ((CGUIMediaWindow *)window)->CurrentDirectory().GetProperty(m_stringParameters[info.GetData2()]).asString();
+      return static_cast<CGUIMediaWindow *>(window)->CurrentDirectory().GetProperty(m_stringParameters[info.GetData2()]).asString();
   }
   else if (info.m_info == CONTAINER_ART)
   {
@@ -8096,17 +8076,9 @@ std::string CGUIInfoManager::GetMultiInfoLabel(const GUIInfo &info, int contextW
   }
   else if (info.m_info == CONTAINER_CONTENT)
   {
-    CGUIWindow *window = NULL;
-    if (info.GetData1())
-    { // container specified
-      window = GetWindowWithCondition(contextWindow, 0);
-    }
-    else
-    { // no container specified - assume a mediawindow
-      window = GetWindowWithCondition(contextWindow, WINDOW_CONDITION_IS_MEDIA_WINDOW);
-    }
+    CGUIWindow *window = GetWindowWithCondition(contextWindow, WINDOW_CONDITION_IS_MEDIA_WINDOW);;
     if (window)
-      return ((CGUIMediaWindow *)window)->CurrentDirectory().GetContent();
+      return static_cast<CGUIMediaWindow *>(window)->CurrentDirectory().GetContent();
   }
   else if (info.m_info == CONTROL_GET_LABEL)
   {
